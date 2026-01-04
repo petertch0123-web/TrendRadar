@@ -13,8 +13,9 @@
 [![GitHub Stars](https://img.shields.io/github/stars/sansan0/TrendRadar?style=flat-square&logo=github&color=yellow)](https://github.com/sansan0/TrendRadar/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/sansan0/TrendRadar?style=flat-square&logo=github&color=blue)](https://github.com/sansan0/TrendRadar/network/members)
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg?style=flat-square)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v4.0.3-blue.svg)](https://github.com/sansan0/TrendRadar)
-[![MCP](https://img.shields.io/badge/MCP-v1.2.0-green.svg)](https://github.com/sansan0/TrendRadar)
+[![Version](https://img.shields.io/badge/version-v4.7.0-blue.svg)](https://github.com/sansan0/TrendRadar)
+[![MCP](https://img.shields.io/badge/MCP-v2.0.1-green.svg)](https://github.com/sansan0/TrendRadar)
+[![RSS](https://img.shields.io/badge/RSS-订阅源支持-orange.svg?style=flat-square&logo=rss&logoColor=white)](https://github.com/sansan0/TrendRadar)
 
 [![企业微信通知](https://img.shields.io/badge/企业微信-通知-00D4AA?style=flat-square)](https://work.weixin.qq.com/)
 [![个人微信通知](https://img.shields.io/badge/个人微信-通知-00D4AA?style=flat-square)](https://weixin.qq.com/)
@@ -183,11 +184,37 @@
 > **📌 查看最新更新**：**[原仓库更新日志](https://github.com/sansan0/TrendRadar?tab=readme-ov-file#-更新日志)** ：
 - **提示**：建议查看【历史更新】，明确具体的【功能内容】
 
+### 2026/01/02 - v4.7.0
 
-### 2025/12/20 - v4.0.3
+- **修复 RSS HTML 显示**：修复 RSS 数据格式不匹配导致的渲染问题，现在按关键词分组正确显示
+- **新增正则表达式语法**：关键词配置支持 `/pattern/` 正则语法，解决英文子字符串误匹配问题（如 `ai` 匹配 `training`）[📖 查看语法详解](#关键词基础语法)
+- **新增显示名称语法**：使用 `=> 备注` 给复杂的正则表达式起个好记的名字，推送消息显示更清晰（如 `/\bai\b/ => AI相关`）
+- **不会写正则？** README 新增 AI 生成正则的引导，告诉 ChatGPT/Claude/DeepSeek 你想匹配什么，让 AI 帮你写
 
-- 新增 URL 标准化功能，解决微博等平台因动态参数（如 `band_rank`）导致的重复推送问题
-- 修复增量模式检测逻辑，正确识别历史标题
+
+### 2026/01/01 - v4.6.0
+
+- **修复 RSS HTML 显示**：将 RSS 内容合并到热榜 HTML 页面，按源分组显示
+- **新增 display_mode 配置**：支持 `keyword`（按关键词分组）和 `platform`（按平台分组）两种显示模式
+
+
+### 2025/12/30 - v4.5.0
+
+- **RSS 订阅源支持**：新增 RSS/Atom 抓取，按关键词分组统计（与热榜格式一致）
+- **存储结构重构**：扁平化目录结构 `output/{type}/{date}.db`
+- **统一排序配置**：`sort_by_position_first` 同时影响热榜和 RSS
+- **配置结构重构**：`config.yaml` 重新组织为 7 个逻辑分组（app、report、notification、storage、platforms、rss、advanced），配置路径更清晰
+
+
+### 2025/12/30 - mcp-v2.0.0
+
+- **架构调整**：移除 TXT 支持，统一使用 SQLite 数据库
+- **RSS 查询**：新增 `get_latest_rss`、`search_rss`、`get_rss_feeds_status`
+- **统一搜索**：`search_news` 支持 `include_rss` 参数同时搜索热榜和 RSS
+
+
+<details>
+<summary>👉 点击展开：<strong>历史更新</strong></summary>
 
 
 ### 2025/12/26 - mcp-v1.2.0
@@ -201,24 +228,23 @@
   - 同步更新 README-MCP-FAQ.md 文档的中英文版 (Q1-Q18)
 
 
-<details>
-<summary>👉 点击展开：<strong>历史更新</strong></summary>
+### 2025/12/20 - v4.0.3
 
-
-### 2025/12/13 - mcp-v1.1.0
-
-  **MCP 模块更新:**
-  - 适配 v4.0.0，同时也兼容 v3.x 的数据
-  - 新增存储同步工具：
-    - `sync_from_remote`: 从远程存储拉取数据到本地
-    - `get_storage_status`: 获取存储配置和状态
-    - `list_available_dates`: 列出本地/远程可用日期范围
+- 新增 URL 标准化功能，解决微博等平台因动态参数（如 `band_rank`）导致的重复推送问题
+- 修复增量模式检测逻辑，正确识别历史标题
 
 
 ### 2025/12/17 - v4.0.1
 
 - StorageManager 添加推送记录代理方法
 - S3 客户端切换至 virtual-hosted style 以提升兼容性（支持腾讯云 COS 等更多服务）
+
+
+### 2025/12/13 - mcp-v1.1.0
+
+  **MCP 模块更新:**
+  - 适配 v4.0.0，同时也兼容 v3.x 的数据
+  - 新增存储同步工具：`sync_from_remote`、`get_storage_status`、`list_available_dates`
 
 
 ### 2025/12/13 - v4.0.0
@@ -267,7 +293,7 @@
 **🌐 Web 服务器支持**
 
 - 新增内置 Web 服务器，支持通过浏览器访问生成的报告
-- 通过 `manage.py` 命令控制启动/停止：`docker exec -it trend-radar python manage.py start_webserver`
+- 通过 `manage.py` 命令控制启动/停止：`docker exec -it trendradar python manage.py start_webserver`
 - 访问地址：`http://localhost:8080`（端口可配置）
 - 安全特性：静态文件服务、目录限制、本地访问
 - 支持自动启动和手动控制两种模式
@@ -445,7 +471,7 @@
 
 - **核心功能**：
   - 新增基于 MCP (Model Context Protocol) 的 AI 分析服务器
-  - 支持13种智能分析工具：基础查询、智能检索、高级分析、系统管理
+  - 支持17种智能分析工具：基础查询、智能检索、高级分析、RSS 查询、系统管理
   - 自然语言交互：通过对话方式查询和分析新闻数据
   - 多客户端支持：Claude Desktop、Cherry Studio、Cursor、Cline 等
 
@@ -708,6 +734,26 @@ frequency_words.txt 文件增加了一个【必须词】功能，使用 + 号
 
 > 💡 详细配置教程见 [配置详解 - 平台配置](#1-平台配置)
 
+### **RSS 订阅源支持**（v4.5.0 新增）
+
+支持 RSS/Atom 订阅源抓取，按关键词分组统计（与热榜格式一致）：
+
+- 📰 **统一格式**：RSS 与热榜使用相同的关键词匹配和显示格式
+- ⚙️ **简单配置**：直接在 `config.yaml` 中添加 RSS 源
+- 🔄 **合并推送**：热榜和 RSS 合并为一条消息推送
+
+```yaml
+# config/config.yaml 示例
+rss:
+  enabled: true
+  feeds:
+    - id: "hacker-news"
+      name: "Hacker News"
+      url: "https://hnrss.org/frontpage"
+```
+
+> 💡 RSS 使用与热榜相同的 `frequency_words.txt` 进行关键词过滤
+
 ### **智能推送策略**
 
 **三种推送模式**：
@@ -731,6 +777,7 @@ frequency_words.txt 文件增加了一个【必须词】功能，使用 + 号
 |------|------|------|
 | **推送时间窗口控制** | 设定推送时间范围（如 09:00-18:00），避免非工作时间打扰 | 关闭 |
 | **内容顺序配置** | 调整"热点词汇统计"和"新增热点新闻"的显示顺序（v3.5.0 新增） | 统计在前 |
+| **显示模式切换** | `keyword`=按关键词分组，`platform`=按平台分组（v4.6.0 新增） | keyword |
 
 > 💡 详细配置教程见 [配置详解 - 报告配置](#7-报告配置) 和 [配置详解 - 推送时间窗口](#8-推送时间窗口配置)
 
@@ -738,12 +785,14 @@ frequency_words.txt 文件增加了一个【必须词】功能，使用 + 号
 
 设置个人关键词（如：AI、比亚迪、教育政策），只推送相关热点，过滤无关信息
 
-**基础语法**（5种）：
+**基础语法**（7种）：
 - 普通词：基础匹配
 - 必须词 `+`：限定范围
 - 过滤词 `!`：排除干扰
 - 数量限制 `@`：控制显示数量（v3.2.0 新增）
 - 全局过滤 `[GLOBAL_FILTER]`：全局排除指定内容（v3.5.0 新增）
+- 正则表达式 `/pattern/`：精确匹配模式（v4.7.0 新增）
+- 显示名称 `=> 备注`：自定义显示文本（v4.7.0 新增）
 
 **高级功能**（v3.2.0 新增）：
 - 🔢 **关键词排序控制**：按热度优先 or 配置顺序优先
@@ -823,7 +872,7 @@ frequency_words.txt 文件增加了一个【必须词】功能，使用 + 号
 基于 MCP (Model Context Protocol) 协议的 AI 对话分析系统，让你用自然语言深度挖掘新闻数据
 
 - **对话式查询**：用自然语言提问，如"查询昨天知乎的热点"、"分析比特币最近的热度趋势"
-- **13 种分析工具**：涵盖基础查询、智能检索、趋势分析、数据洞察、情感分析等
+- **17 种分析工具**：涵盖基础查询、智能检索、趋势分析、数据洞察、情感分析、RSS 查询等
 - **多客户端支持**：Cherry Studio（GUI 配置）、Claude Desktop、Cursor、Cline 等
 - **深度分析能力**：
   - 话题趋势追踪（热度变化、生命周期、爆火检测、趋势预测）
@@ -1147,12 +1196,13 @@ GitHub 一键 Fork 即可使用，无需编程基础。
    - 注意事项：为防止邮件群发功能被**滥用**，当前的群发是所有收件人都能看到彼此的邮箱地址。
    - 如果你没有过配置下面这种邮箱发送的经历，不建议尝试
 
-   > ⚠️ **重要配置依赖**：邮件推送需要 HTML 报告文件。请确保 `config/config.yaml` 中的 `formats.html` 设置为 `true`：
+   > ⚠️ **重要配置依赖**：邮件推送需要 HTML 报告文件。请确保 `config/config.yaml` 中的 `storage.formats.html` 设置为 `true`：
    > ```yaml
-   > formats:
-   >   sqlite: true
-   >   txt: false
-   >   html: true   # 必须启用，否则邮件推送会失败
+   > storage:
+   >   formats:
+   >     sqlite: true
+   >     txt: false
+   >     html: true   # 必须启用，否则邮件推送会失败
    > ```
    > 如果设置为 `false`，邮件推送时会报错：`错误：HTML文件不存在或未提供: None`
 
@@ -1194,6 +1244,7 @@ GitHub 一键 Fork 即可使用，无需编程基础。
    | **天翼邮箱** | 189.cn | smtp.189.cn | 465 | SSL |
    | **阿里云邮箱** | aliyun.com | smtp.aliyun.com | 465 | TLS |
    | **Yandex邮箱** | yandex.com | smtp.yandex.com | 465 | TLS |
+   | **iCloud邮箱** | icloud.com | smtp.mail.me.com | 587 | SSL |
 
    > **自动识别**：使用以上邮箱时，无需手动配置 `EMAIL_SMTP_SERVER` 和 `EMAIL_SMTP_PORT`，系统会自动识别。
    >
@@ -1205,6 +1256,7 @@ GitHub 一键 Fork 即可使用，无需编程基础。
    > - 感谢 [@DYZYD](https://github.com/DYZYD) 贡献天翼邮箱（189.cn）配置并完成自发自收测试 ([#291](https://github.com/sansan0/TrendRadar/issues/291))
    > - 感谢 [@longzhenren](https://github.com/longzhenren) 贡献阿里云邮箱（aliyun.com）配置并完成测试 ([#344](https://github.com/sansan0/TrendRadar/issues/344))
    > - 感谢 [@ACANX](https://github.com/ACANX) 贡献 Yandex 邮箱（yandex.com）配置并完成测试 ([#663](https://github.com/sansan0/TrendRadar/issues/663))
+   > - 感谢 [@Sleepy-Tianhao](https://github.com/Sleepy-Tianhao) 贡献 iCloud 邮箱（icloud.com）配置并完成测试 ([#728](https://github.com/sansan0/TrendRadar/issues/728))
 
    **常见邮箱设置：**
 
@@ -1710,7 +1762,7 @@ platforms:
 
 ### 2. 关键词配置
 
-在 `frequency_words.txt` 文件中配置监控的关键词，支持五种语法、区域标记和词组功能。
+在 `frequency_words.txt` 文件中配置监控的关键词，支持七种语法、区域标记和词组功能。
 
 | 语法类型 | 符号 | 作用 | 示例 | 匹配逻辑 |
 |---------|------|------|------|---------|
@@ -1719,6 +1771,8 @@ platforms:
 | **过滤词** | `!` | 排除干扰 | `!广告` | 包含则直接排除 |
 | **数量限制** | `@` | 控制显示数量 | `@10` | 最多显示10条新闻（v3.2.0新增） |
 | **全局过滤** | `[GLOBAL_FILTER]` | 全局排除指定内容 | 见下方示例 | 任何情况下都过滤（v3.5.0新增） |
+| **正则表达式** | `/pattern/` | 精确匹配模式 | `/\bai\b/` | 使用正则表达式匹配（v4.7.0新增） |
+| **显示名称** | `=> 备注` | 自定义显示文本 | `/\bai\b/ => AI相关` | 推送和HTML显示备注名称（v4.7.0新增） |
 
 #### 2.1 基础语法
 
@@ -1813,6 +1867,105 @@ AI
 - 全局过滤词应谨慎使用，避免过度过滤导致遗漏有价值内容
 - 建议全局过滤词控制在 5-15 个以内
 - 对于特定词组的过滤，优先使用词组内过滤词（`!` 前缀）
+
+##### 6. **正则表达式** `/pattern/` - 精确匹配模式（v4.7.0 新增）
+
+普通关键词使用子字符串匹配，这在中文环境下很方便，但在英文环境可能会产生误匹配。例如 `ai` 会匹配到 `training` 中的 `ai`。
+
+使用正则表达式语法 `/pattern/` 可以实现精确匹配：
+
+```txt
+/(?<![a-z])ai(?![a-z])/
+人工智能
+```
+
+**作用：** 使用正则表达式进行匹配，支持所有 Python 正则语法
+
+**常用正则模式：**
+
+| 需求 | 正则写法 | 说明 |
+|------|---------|------|
+| 英文单词边界 | `/\bword\b/` | 匹配独立单词，如 `/\bai\b/` 匹配 "AI" 但不匹配 "training" |
+| 前后非字母 | `/(?<![a-z])ai(?![a-z])/` | 更宽松的边界，适合中英混合场景 |
+| 开头匹配 | `/^breaking/` | 只匹配以 "breaking" 开头的标题 |
+| 结尾匹配 | `/发布$/` | 只匹配以 "发布" 结尾的标题 |
+| 多选一 | `/苹果\|华为\|小米/` | 匹配其中任意一个（注意转义 `\|`） |
+
+**匹配示例：**
+```txt
+# 配置
+/(?<![a-z])ai(?![a-z])/
+人工智能
+```
+
+- ✅ "AI is the future" ← 匹配独立的 "AI"
+- ✅ "你好ai这里" ← 前后是中文，匹配 "ai"
+- ✅ "人工智能发展迅速" ← 匹配 "人工智能"
+- ❌ "Resistance training is important" ← "training" 中的 "ai" 不匹配
+- ❌ "The maid cleaned the room" ← "maid" 中的 "ai" 不匹配
+
+**组合使用：**
+```txt
+# 正则 + 普通词 + 过滤词
+/\bai\b/
+人工智能
+机器学习
+!广告
+```
+
+**注意事项：**
+- 正则表达式自动启用大小写不敏感匹配（`re.IGNORECASE`）
+- 支持 `/pattern/i` 等 JavaScript 风格写法（flags 会被忽略，因为默认已启用忽略大小写）
+- 无效的正则语法会被当作普通词处理
+- 正则可用于普通词、必须词(`+`)、过滤词(`!`)
+
+**💡 不会写正则？让 AI 帮你生成！**
+
+如果你不熟悉正则表达式，可以直接让 ChatGPT / Claude / DeepSeek 帮你生成。只需告诉 AI：
+
+> 我需要一个 Python 正则表达式，用于匹配英文单词 "ai"，但不匹配 "training" 中的 "ai"。
+> 请直接给出正则表达式，格式为 `/pattern/`，不需要额外解释。
+
+AI 会给你类似这样的结果：`/(?<![a-zA-Z])ai(?![a-zA-Z])/`
+
+##### 7. **显示名称** `=> 备注` - 自定义显示文本（v4.7.0 新增）
+
+正则表达式在推送消息和 HTML 页面显示时可能不太友好。使用 `=> 备注` 语法可以设置显示名称：
+
+```txt
+/(?<![a-zA-Z])ai(?![a-zA-Z])/ => AI 相关
+人工智能
+```
+
+**作用：** 推送消息和 HTML 页面显示 "AI 相关" 而不是复杂的正则表达式
+
+**语法格式：**
+```txt
+# 正则 + 显示名称
+/pattern/ => 显示名称
+/pattern/i => 显示名称    # 支持 flags 写法（flags 被忽略）
+/pattern/=>显示名称       # => 两边空格可选
+
+# 普通词 + 显示名称
+deepseek => DeepSeek 动态
+```
+
+**匹配示例：**
+```txt
+# 配置
+/(?<![a-zA-Z])ai(?![a-zA-Z])/ => AI 相关
+人工智能
+```
+
+| 原始配置 | 推送/HTML 显示 |
+|---------|---------------|
+| `/(?<![a-z])ai(?![a-z])/` + `人工智能` | `(?<![a-z])ai(?![a-z]) 人工智能` |
+| `/(?<![a-z])ai(?![a-z])/ => AI 相关` + `人工智能` | **`AI 相关`** |
+
+**注意事项：**
+- 显示名称只需写在词组的第一个词上
+- 如果词组中多个词都有显示名称，使用第一个
+- 不设置显示名称时，自动使用词组内所有词拼接
 
 ---
 
@@ -2061,13 +2214,14 @@ report:
 <summary>👉 点击展开：<strong>热点权重调整</strong></summary>
 <br>
 
-**配置位置：** `config/config.yaml` 的 `weight` 部分
+**配置位置：** `config/config.yaml` 的 `advanced.weight` 部分
 
 ```yaml
-weight:
-  rank_weight: 0.6       # 排名权重
-  frequency_weight: 0.3  # 频次权重
-  hotness_weight: 0.1    # 热度权重
+advanced:
+  weight:
+    rank: 0.6           # 排名权重
+    frequency: 0.3      # 频次权重
+    hotness: 0.1        # 热度权重
 ```
 
 当前默认的配置是平衡性配置
@@ -2076,25 +2230,27 @@ weight:
 
 **追实时热点型**：
 ```yaml
-weight:
-  rank_weight: 0.8    # 主要看排名
-  frequency_weight: 0.1  # 不太在乎持续性
-  hotness_weight: 0.1
+advanced:
+  weight:
+    rank: 0.8           # 主要看排名
+    frequency: 0.1      # 不太在乎持续性
+    hotness: 0.1
 ```
 **适用人群**：自媒体博主、营销人员、想快速了解当下最火话题的用户
 
 **追深度话题型**：
 ```yaml
-weight:
-  rank_weight: 0.4    # 适度看排名
-  frequency_weight: 0.5  # 重视当天内的持续热度
-  hotness_weight: 0.1
+advanced:
+  weight:
+    rank: 0.4           # 适度看排名
+    frequency: 0.5      # 重视当天内的持续热度
+    hotness: 0.1
 ```
 **适用人群**：投资者、研究人员、新闻工作者、需要深度分析趋势的用户
 
 #### 调整的方法
 1. **三个数字加起来必须等于 1.0**
-2. **哪个重要就调大哪个**：在乎排名就调大 rank_weight，在乎持续性就调大 frequency_weight
+2. **哪个重要就调大哪个**：在乎排名就调大 `rank`，在乎持续性就调大 `frequency`
 3. **建议每次只调 0.1-0.2**，观察效果
 
 核心思路：追求速度和时效性的用户提高排名权重，追求深度和稳定性的用户提高频次权重。
@@ -2163,10 +2319,6 @@ weight:
 
 ### 6. Docker 部署
 
-<details>
-<summary>👉 点击展开：<strong>Docker 部署完整指南</strong></summary>
-<br>
-
 **镜像说明：**
 
 TrendRadar 提供两个独立的 Docker 镜像，可根据需求选择部署：
@@ -2180,7 +2332,9 @@ TrendRadar 提供两个独立的 Docker 镜像，可根据需求选择部署：
 > - 只需要推送功能：仅部署 `wantcat/trendradar` 镜像
 > - 需要 AI 分析功能：同时部署两个镜像
 
----
+<details>
+<summary>👉 点击展开：<strong>Docker 部署完整指南</strong></summary>
+<br>
 
 #### 方式一：使用 docker compose（推荐）
 
@@ -2220,31 +2374,33 @@ TrendRadar 提供两个独立的 Docker 镜像，可根据需求选择部署：
 ```
 
 2. **配置文件说明**:
-   - `config/config.yaml` - 应用主配置（报告模式、推送设置等）
-   - `config/frequency_words.txt` - 关键词配置（设置你关心的热点词汇）
-   - `.env` - 环境变量配置（webhook URLs 和定时任务）
+
+   **配置分工原则（v4.6.0 优化）**：
+   - `config/config.yaml` - **功能配置**（报告模式、推送设置、存储格式、推送窗口等）
+   - `config/frequency_words.txt` - **关键词配置**（设置你关心的热点词汇）
+   - `docker/.env` - **敏感信息 + Docker 特有配置**（webhook URLs、S3 密钥、定时任务）
+
+   > 💡 **配置修改生效**：修改 `config.yaml` 后，执行 `docker compose up -d` 重启容器即可生效
 
    **⚙️ 环境变量覆盖机制（v3.0.5+）**
 
-   如果你在 NAS 或其他 Docker 环境中遇到**修改 `config.yaml` 后配置不生效**的问题，可以通过环境变量直接覆盖配置：
+   `.env` 文件中的环境变量会覆盖 `config.yaml` 中的对应配置：
 
    | 环境变量 | 对应配置 | 示例值 | 说明 |
    |---------|---------|-------|------|
-   | `ENABLE_CRAWLER` | `crawler.enable_crawler` | `true` / `false` | 是否启用爬虫 |
-   | `ENABLE_NOTIFICATION` | `notification.enable_notification` | `true` / `false` | 是否启用通知 |
+   | `ENABLE_CRAWLER` | `advanced.crawler.enabled` | `true` / `false` | 是否启用爬虫 |
+   | `ENABLE_NOTIFICATION` | `notification.enabled` | `true` / `false` | 是否启用通知 |
    | `REPORT_MODE` | `report.mode` | `daily` / `incremental` / `current`| 报告模式 |
-   | `MAX_ACCOUNTS_PER_CHANNEL` | `notification.max_accounts_per_channel` | `3` | 每个渠道最大账号数 |
-   | `PUSH_WINDOW_ENABLED` | `notification.push_window.enabled` | `true` / `false` | 推送时间窗口开关 |
-   | `PUSH_WINDOW_START` | `notification.push_window.time_range.start` | `08:00` | 推送开始时间 |
-   | `PUSH_WINDOW_END` | `notification.push_window.time_range.end` | `22:00` | 推送结束时间 |
+   | `DISPLAY_MODE` | `report.display_mode` | `keyword` / `platform` | 显示模式 |
    | `ENABLE_WEBSERVER` | - | `true` / `false` | 是否自动启动 Web 服务器 |
-   | `WEBSERVER_PORT` | - | `8080` | Web 服务器端口（默认 8080） |
-   | `FEISHU_WEBHOOK_URL` | `notification.webhooks.feishu_url` | `https://...` | 飞书 Webhook（支持多账号，用 `;` 分隔） |
+   | `WEBSERVER_PORT` | - | `8080` | Web 服务器端口 |
+   | `FEISHU_WEBHOOK_URL` | `notification.channels.feishu.webhook_url` | `https://...` | 飞书 Webhook（多账号用 `;` 分隔） |
+   | `S3_*` | `storage.remote.*` | - | 远程存储配置（5 个参数） |
 
    **配置优先级**：环境变量 > config.yaml
 
    **使用方法**：
-   - 修改 `.env` 文件，取消注释并填写需要的配置
+   - 修改 `.env` 文件，填写需要的配置
    - 或在 NAS/群晖 Docker 管理界面的"环境变量"中直接添加
    - 重启容器后生效：`docker compose up -d`
 
@@ -2256,43 +2412,43 @@ TrendRadar 提供两个独立的 Docker 镜像，可根据需求选择部署：
    # 拉取最新镜像
    docker compose pull
 
-   # 启动所有服务（trend-radar + trend-radar-mcp）
+   # 启动所有服务（trendradar + trendradar-mcp）
    docker compose up -d
    ```
 
    **选项 B：仅启动新闻推送服务**
    ```bash
-   # 只启动 trend-radar（定时抓取和推送）
-   docker compose pull trend-radar
-   docker compose up -d trend-radar
+   # 只启动 trendradar（定时抓取和推送）
+   docker compose pull trendradar
+   docker compose up -d trendradar
    ```
 
    **选项 C：仅启动 MCP AI 分析服务**
    ```bash
-   # 只启动 trend-radar-mcp（提供 AI 分析接口）
-   docker compose pull trend-radar-mcp
-   docker compose up -d trend-radar-mcp
+   # 只启动 trendradar-mcp（提供 AI 分析接口）
+   docker compose pull trendradar-mcp
+   docker compose up -d trendradar-mcp
    ```
 
    > 💡 **提示**：
-   > - 大多数用户只需启动 `trend-radar` 即可实现新闻推送功能
-   > - 只有需要使用 Claude/ChatGPT 进行 AI 对话分析时，才需启动 `trend-radar-mcp`
+   > - 大多数用户只需启动 `trendradar` 即可实现新闻推送功能
+   > - 只有需要使用 Claude/ChatGPT 进行 AI 对话分析时，才需启动 `trendradar-mcp`
    > - 两个服务相互独立，可根据需求灵活组合
 
 4. **查看运行状态**:
    ```bash
    # 查看新闻推送服务日志
-   docker logs -f trend-radar
+   docker logs -f trendradar
 
    # 查看 MCP AI 分析服务日志
-   docker logs -f trend-radar-mcp
+   docker logs -f trendradar-mcp
 
    # 查看所有容器状态
-   docker ps | grep trend-radar
+   docker ps | grep trendradar
 
    # 停止特定服务
-   docker compose stop trend-radar      # 停止推送服务
-   docker compose stop trend-radar-mcp  # 停止 MCP 服务
+   docker compose stop trendradar      # 停止推送服务
+   docker compose stop trendradar-mcp  # 停止 MCP 服务
    ```
 
 #### 方式二：本地构建（开发者选项）
@@ -2321,12 +2477,12 @@ docker compose build
 docker compose up -d
 
 # 选项 B：仅构建并启动新闻推送服务
-docker compose build trend-radar
-docker compose up -d trend-radar
+docker compose build trendradar
+docker compose up -d trendradar
 
 # 选项 C：仅构建并启动 MCP AI 分析服务
-docker compose build trend-radar-mcp
-docker compose up -d trend-radar-mcp
+docker compose build trendradar-mcp
+docker compose up -d trendradar-mcp
 ```
 
 > 💡 **架构参数说明**：
@@ -2362,36 +2518,36 @@ docker compose up -d
 
 ```bash
 # 查看运行状态
-docker exec -it trend-radar python manage.py status
+docker exec -it trendradar python manage.py status
 
 # 手动执行一次爬虫
-docker exec -it trend-radar python manage.py run
+docker exec -it trendradar python manage.py run
 
 # 查看实时日志
-docker exec -it trend-radar python manage.py logs
+docker exec -it trendradar python manage.py logs
 
 # 显示当前配置
-docker exec -it trend-radar python manage.py config
+docker exec -it trendradar python manage.py config
 
 # 显示输出文件
-docker exec -it trend-radar python manage.py files
+docker exec -it trendradar python manage.py files
 
 # Web 服务器管理（用于浏览器访问生成的报告）
-docker exec -it trend-radar python manage.py start_webserver   # 启动 Web 服务器
-docker exec -it trend-radar python manage.py stop_webserver    # 停止 Web 服务器
-docker exec -it trend-radar python manage.py webserver_status  # 查看 Web 服务器状态
+docker exec -it trendradar python manage.py start_webserver   # 启动 Web 服务器
+docker exec -it trendradar python manage.py stop_webserver    # 停止 Web 服务器
+docker exec -it trendradar python manage.py webserver_status  # 查看 Web 服务器状态
 
 # 查看帮助信息
-docker exec -it trend-radar python manage.py help
+docker exec -it trendradar python manage.py help
 
 # 重启容器
-docker restart trend-radar
+docker restart trendradar
 
 # 停止容器
-docker stop trend-radar
+docker stop trendradar
 
 # 删除容器（保留数据）
-docker rm trend-radar
+docker rm trendradar
 ```
 
 > 💡 **Web 服务器说明**：
@@ -2413,17 +2569,16 @@ TrendRadar 生成的当日汇总 HTML 报告会同时保存到两个位置：
 |---------|---------|---------|
 | `output/index.html` | 宿主机直接访问 | **Docker 部署**（通过 Volume 挂载，宿主机可见） |
 | `index.html` | 根目录访问 | **GitHub Pages**（仓库根目录，Pages 自动识别） |
-| `output/YYYY-MM-DD/html/当日汇总.html` | 历史报告访问 | 所有环境（按日期归档） |
+| `output/html/YYYY-MM-DD/当日汇总.html` | 历史报告访问 | 所有环境（按日期归档） |
 
 **本地访问示例**：
 ```bash
 # 方式 1：通过 Web 服务器访问（推荐，Docker 环境）
 # 1. 启动 Web 服务器
-docker exec -it trend-radar python manage.py start_webserver
+docker exec -it trendradar python manage.py start_webserver
 # 2. 在浏览器访问
 http://localhost:8080                           # 访问最新报告（默认 index.html）
-http://localhost:8080/2025-xx-xx/               # 访问指定日期的报告
-http://localhost:8080/2025-xx-xx/html/          # 浏览该日期下的所有 HTML 文件
+http://localhost:8080/html/2025-xx-xx/          # 访问指定日期的报告
 
 # 方式 2：直接打开文件（本地环境）
 open ./output/index.html             # macOS
@@ -2431,7 +2586,7 @@ start ./output/index.html            # Windows
 xdg-open ./output/index.html         # Linux
 
 # 方式 3：访问历史归档
-open ./output/2025-xx-xx/html/当日汇总.html
+open ./output/html/2025-xx-xx/当日汇总.html
 ```
 
 **为什么有两个 index.html？**
@@ -2444,16 +2599,16 @@ open ./output/2025-xx-xx/html/当日汇总.html
 
 ```bash
 # 检查容器状态
-docker inspect trend-radar
+docker inspect trendradar
 
 # 查看容器日志
-docker logs --tail 100 trend-radar
+docker logs --tail 100 trendradar
 
 # 进入容器调试
-docker exec -it trend-radar /bin/bash
+docker exec -it trendradar /bin/bash
 
 # 验证配置文件
-docker exec -it trend-radar ls -la /app/config/
+docker exec -it trendradar ls -la /app/config/
 ```
 
 #### MCP 服务部署（AI 分析功能）
@@ -2464,12 +2619,12 @@ docker exec -it trend-radar ls -la /app/config/
 
 ```mermaid
 flowchart TB
-    subgraph trend-radar["trend-radar"]
+    subgraph trendradar["trendradar"]
         A1[定时抓取新闻]
         A2[推送通知]
     end
     
-    subgraph trend-radar-mcp["trend-radar-mcp"]
+    subgraph trendradar-mcp["trendradar-mcp"]
         B1[127.0.0.1:3333]
         B2[AI 分析接口]
     end
@@ -2479,8 +2634,8 @@ flowchart TB
         C2["output/ (ro)"]
     end
     
-    trend-radar --> shared
-    trend-radar-mcp --> shared
+    trendradar --> shared
+    trendradar-mcp --> shared
 ```
 
 **快速启动**：
@@ -2489,17 +2644,17 @@ flowchart TB
 
 ```bash
 cd TrendRadar/docker
-docker compose up -d trend-radar-mcp
+docker compose up -d trendradar-mcp
 
 # 查看运行状态
-docker ps | grep trend-radar-mcp
+docker ps | grep trendradar-mcp
 ```
 
 **单独启动 MCP 服务**（不使用 docker compose）：
 
 ```bash
 # Linux/Mac
-docker run -d --name trend-radar-mcp \
+docker run -d --name trendradar-mcp \
   -p 127.0.0.1:3333:3333 \
   -v $(pwd)/config:/app/config:ro \
   -v $(pwd)/output:/app/output:ro \
@@ -2507,7 +2662,7 @@ docker run -d --name trend-radar-mcp \
   wantcat/trendradar-mcp:latest
 
 # Windows PowerShell
-docker run -d --name trend-radar-mcp `
+docker run -d --name trendradar-mcp `
   -p 127.0.0.1:3333:3333 `
   -v ${PWD}/config:/app/config:ro `
   -v ${PWD}/output:/app/output:ro `
@@ -2524,7 +2679,7 @@ docker run -d --name trend-radar-mcp `
 curl http://127.0.0.1:3333/mcp
 
 # 查看 MCP 服务日志
-docker logs -f trend-radar-mcp
+docker logs -f trendradar-mcp
 ```
 
 **在 AI 客户端中配置**：
@@ -2563,6 +2718,7 @@ MCP 服务启动后，根据不同客户端进行配置：
 ```yaml
 report:
   mode: "daily"                    # 推送模式
+  display_mode: "keyword"          # 显示模式（v4.6.0 新增）
   rank_threshold: 5                # 排名高亮阈值
   sort_by_position_first: false    # 排序优先级
   max_news_per_keyword: 0          # 每个关键词最大显示数量
@@ -2574,10 +2730,41 @@ report:
 | 配置项 | 类型 | 默认值 | 说明 |
 |-------|------|-------|------|
 | `mode` | string | `daily` | 推送模式，可选 `daily`/`incremental`/`current`，详见 [推送模式详解](#3-推送模式详解) |
+| `display_mode` | string | `keyword` | 显示模式，可选 `keyword`/`platform`，详见下方说明 |
 | `rank_threshold` | int | `5` | 排名高亮阈值，排名 ≤ 该值的新闻会加粗显示 |
 | `sort_by_position_first` | bool | `false` | 排序优先级：`false`=按热点条数排序，`true`=按配置位置排序 |
 | `max_news_per_keyword` | int | `0` | 每个关键词最大显示数量，`0`=不限制 |
 | `reverse_content_order` | bool | `false` | 内容顺序：`false`=热点词汇统计在前，`true`=新增热点新闻在前 |
+
+#### 显示模式配置（v4.6.0 新增）
+
+控制推送消息和 HTML 报告中新闻的分组方式：
+
+| 模式 | 分组方式 | 标题前缀 | 适用场景 |
+|------|---------|---------|---------|
+| `keyword`（默认） | 按关键词分组 | `[平台名]` | 关注特定话题的用户 |
+| `platform` | 按平台分组 | `[关键词]` | 关注特定平台的用户 |
+
+**示例对比：**
+
+```
+# keyword 模式（按关键词分组）
+📊 热点词汇统计
+🔥 [1/3] AI : 12 条
+  1. [微博] OpenAI发布GPT-5 #1-#3 - 08:30 (5次)
+  2. [知乎] 如何看待AI取代程序员 #2 - 09:15 (3次)
+
+# platform 模式（按平台分组）
+📊 热点新闻统计
+🔥 [1/4] 微博 : 12 条
+  1. [AI] OpenAI发布GPT-5 #1-#3 - 08:30 (5次)
+  2. [特朗普] 特朗普宣布重大政策 #2 - 09:15 (3次)
+```
+
+**Docker 环境变量：**
+```bash
+DISPLAY_MODE=platform
+```
 
 #### 内容顺序配置（v3.5.0 新增）
 
@@ -2626,9 +2813,8 @@ MAX_NEWS_PER_KEYWORD=10
 notification:
   push_window:
     enabled: false                    # 是否启用
-    time_range:
-      start: "20:00"                  # 开始时间（北京时间）
-      end: "22:00"                    # 结束时间（北京时间）
+    start: "20:00"                    # 开始时间（北京时间）
+    end: "22:00"                      # 结束时间（北京时间）
     once_per_day: true                # 每天只推送一次
 ```
 
@@ -2637,8 +2823,8 @@ notification:
 | 配置项 | 类型 | 默认值 | 说明 |
 |-------|------|-------|------|
 | `enabled` | bool | `false` | 是否启用推送时间窗口控制 |
-| `time_range.start` | string | `"20:00"` | 推送时间窗口开始时间（北京时间，HH:MM 格式） |
-| `time_range.end` | string | `"22:00"` | 推送时间窗口结束时间（北京时间，HH:MM 格式） |
+| `start` | string | `"20:00"` | 推送时间窗口开始时间（北京时间，HH:MM 格式） |
+| `end` | string | `"22:00"` | 推送时间窗口结束时间（北京时间，HH:MM 格式） |
 | `once_per_day` | bool | `true` | `true`=每天在窗口内只推送一次，`false`=窗口内每次执行都推送 |
 
 #### 使用场景
@@ -2673,9 +2859,8 @@ PUSH_WINDOW_ONCE_PER_DAY=false
 notification:
   push_window:
     enabled: true
-    time_range:
-      start: "20:00"
-      end: "22:00"
+    start: "20:00"
+    end: "22:00"
     once_per_day: true
 ```
 
@@ -2685,9 +2870,8 @@ notification:
 notification:
   push_window:
     enabled: true
-    time_range:
-      start: "09:00"
-      end: "18:00"
+    start: "09:00"
+    end: "18:00"
     once_per_day: false
 ```
 
@@ -2957,13 +3141,17 @@ NTFY_TOKEN=token1;token2;token3
 
 ```yaml
 notification:
-  enable_notification: true
-  max_accounts_per_channel: 3
+  enabled: true
 
-  webhooks:
-    feishu_url: "https://hook1.feishu.cn/xxx;https://hook2.feishu.cn/yyy"
-    telegram_bot_token: "token1;token2"
-    telegram_chat_id: "id1;id2"
+  channels:
+    feishu:
+      webhook_url: "https://hook1.feishu.cn/xxx;https://hook2.feishu.cn/yyy"
+    telegram:
+      bot_token: "token1;token2"
+      chat_id: "id1;id2"
+
+advanced:
+  max_accounts_per_channel: 3
 ```
 
 **⚠️ 重要提醒**：
@@ -3060,8 +3248,8 @@ storage:
 ```
 
 **清理逻辑**：
-- 本地存储：删除过期日期的文件夹（如 `output/2025-11-10/`）
-- 远程存储：批量删除过期的云端对象（如 `news/2025-11-10.db`）
+- 本地存储：删除过期日期的数据库文件（如 `output/news/2025-11-10.db`、`output/rss/2025-11-10.db`）
+- 远程存储：批量删除过期的云端对象（如 `news/2025-11-10.db`、`rss/2025-11-10.db`）
 
 #### 时区配置（v4.0.0 新增）
 
@@ -3108,10 +3296,10 @@ AI 分析功能**不是**直接查询网络实时数据，而是分析你**本�
 
 #### 使用说明：
 
-1. **项目自带测试数据**：`output` 目录默认包含 **2025-11-01～2025-11-15** 的新闻数据，可用于快速体验 AI 功能
+1. **项目自带测试数据**：`output` 目录默认包含 **2025-12-21～2025-12-27** 一周的热榜新闻数据，可用于快速体验 AI 功能
 
 2. **查询限制**：
-   - ✅ 只能查询已有日期范围内的数据（11月1-15日）
+   - ✅ 只能查询已有日期范围内的数据（12月21-27日，共7天）
    - ❌ 无法查询实时新闻或未来日期
 
 3. **获取最新数据**：
@@ -3386,11 +3574,12 @@ MCP Inspector 是官方调试工具，用于测试 MCP 连接：
 3. **在浏览器中连接**：
    - 访问：`http://localhost:3333/mcp`
    - 测试 "Ping Server" 功能验证连接
-   - 检查 "List Tools" 是否返回 13 个工具：
+   - 检查 "List Tools" 是否返回 17 个工具：
      - 基础查询：get_latest_news, get_news_by_date, get_trending_topics
-     - 智能检索：search_news, search_related_news_history
-     - 高级分析：analyze_topic_trend, analyze_data_insights, analyze_sentiment, find_similar_news, generate_summary_report
-     - 系统管理：get_current_config, get_system_status, trigger_crawl
+     - 智能检索：search_news, find_related_news
+     - 高级分析：analyze_topic_trend, analyze_data_insights, analyze_sentiment, aggregate_news, compare_periods, generate_summary_report
+     - RSS 查询：get_latest_rss, search_rss, get_rss_feeds_status
+     - 系统管理：get_current_config, get_system_status, resolve_date_range
 
 </details>
 

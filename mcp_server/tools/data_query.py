@@ -14,7 +14,8 @@ from ..utils.validators import (
     validate_date_range,
     validate_top_n,
     validate_mode,
-    validate_date_query
+    validate_date_query,
+    normalize_date_range
 )
 from ..utils.errors import MCPError
 
@@ -263,6 +264,10 @@ class DataQueryTools:
             # 参数验证 - 默认今天
             if date_range is None:
                 date_range = "今天"
+
+            # 规范化 date_range（处理 JSON 字符串序列化问题）
+            date_range = normalize_date_range(date_range)
+
             # 处理 date_range：支持字符串或对象
             if isinstance(date_range, dict):
                 # 范围对象，取 start 日期
@@ -287,6 +292,145 @@ class DataQueryTools:
                 "date": target_date.strftime("%Y-%m-%d"),
                 "date_range": date_range,
                 "platforms": platforms,
+                "success": True
+            }
+
+        except MCPError as e:
+            return {
+                "success": False,
+                "error": e.to_dict()
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": {
+                    "code": "INTERNAL_ERROR",
+                    "message": str(e)
+                }
+            }
+
+    # ========================================
+    # RSS 数据查询方法
+    # ========================================
+
+    def get_latest_rss(
+        self,
+        feeds: Optional[List[str]] = None,
+        limit: Optional[int] = None,
+        include_summary: bool = False
+    ) -> Dict:
+        """
+        获取最新的 RSS 数据
+
+        Args:
+            feeds: RSS 源 ID 列表，如 ['hacker-news', '36kr']
+            limit: 返回条数限制，默认50
+            include_summary: 是否包含摘要，默认False（节省token）
+
+        Returns:
+            RSS 条目列表字典
+        """
+        try:
+            limit = validate_limit(limit, default=50)
+
+            rss_list = self.data_service.get_latest_rss(
+                feeds=feeds,
+                limit=limit,
+                include_summary=include_summary
+            )
+
+            return {
+                "rss": rss_list,
+                "total": len(rss_list),
+                "feeds": feeds,
+                "success": True
+            }
+
+        except MCPError as e:
+            return {
+                "success": False,
+                "error": e.to_dict()
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": {
+                    "code": "INTERNAL_ERROR",
+                    "message": str(e)
+                }
+            }
+
+    def search_rss(
+        self,
+        keyword: str,
+        feeds: Optional[List[str]] = None,
+        days: int = 7,
+        limit: Optional[int] = None,
+        include_summary: bool = False
+    ) -> Dict:
+        """
+        搜索 RSS 数据
+
+        Args:
+            keyword: 搜索关键词
+            feeds: RSS 源 ID 列表
+            days: 搜索最近 N 天的数据，默认 7 天
+            limit: 返回条数限制，默认50
+            include_summary: 是否包含摘要
+
+        Returns:
+            匹配的 RSS 条目列表
+        """
+        try:
+            keyword = validate_keyword(keyword)
+            limit = validate_limit(limit, default=50)
+
+            if days < 1 or days > 30:
+                days = 7
+
+            rss_list = self.data_service.search_rss(
+                keyword=keyword,
+                feeds=feeds,
+                days=days,
+                limit=limit,
+                include_summary=include_summary
+            )
+
+            return {
+                "rss": rss_list,
+                "total": len(rss_list),
+                "keyword": keyword,
+                "feeds": feeds,
+                "days": days,
+                "success": True
+            }
+
+        except MCPError as e:
+            return {
+                "success": False,
+                "error": e.to_dict()
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": {
+                    "code": "INTERNAL_ERROR",
+                    "message": str(e)
+                }
+            }
+
+    def get_rss_feeds_status(self) -> Dict:
+        """
+        获取 RSS 源状态
+
+        Returns:
+            RSS 源状态信息
+        """
+        try:
+            status = self.data_service.get_rss_feeds_status()
+
+            return {
+                **status,
                 "success": True
             }
 
